@@ -6,6 +6,30 @@ Brawlers Arena (2017) - Game Remake
 
 A 2D fighting video game developed with Pygame.
 
+## About
+
+**Brawlers Arena** is a university project originally created at **Universidad Católica del Norte** in 2017. The project was initially developed for Raspberry Pi 3B+ with joystick support.
+
+As of 2026, this project is undergoing a **refactor/remake** to improve efficiency and add missing features that were originally planned. The goal is to modernize the codebase while maintaining the core gameplay experience.
+
+## Credits
+
+### Original Development Team (2017)
+
+**Programmers:**
+- Johan Ordenes
+- Pablo Arias
+- Catherine Alegria
+
+**Designers:**
+- Constanza Castro
+- Patricia Carrasco
+
+### Current Development (2026+)
+
+**Project Lead & Maintainer:**
+- Johan Ordenes
+
 ## Screenshots
 
 ### Main Menu
