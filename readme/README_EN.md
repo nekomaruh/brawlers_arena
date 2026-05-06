@@ -2,8 +2,6 @@
 
 Brawlers Arena (2017) - Game Remake 
 
-**[English](readme/README_EN.md) | [Español](readme/README_ES.md)**
-
 A 2D fighting video game developed with Pygame.
 
 ## About
@@ -33,16 +31,16 @@ As of 2026, this project is undergoing a **refactor/remake** to improve efficien
 ## Screenshots
 
 ### Main Menu
-![Main Menu](readme/1_menu.png)
+![Main Menu](1_menu.png)
 
 ### Character Selection
-![Character Selection](readme/2_player.png)
+![Character Selection](2_player.png)
 
 ### Map Selection
-![Map Selection](readme/3_map.png)
+![Map Selection](3_map.png)
 
 ### Gameplay Screen
-![Gameplay Screen](readme/4_game.png)
+![Gameplay Screen](4_game.png)
 
 ## Features
 
