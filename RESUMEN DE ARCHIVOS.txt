@@ -1,0 +1,22 @@
+PLAY (Ejecuta el juego)
+	
+Animations: Animaciones de los sprites de personajes
+character_selection: Pantalla de seleccion de personajes
+colores: Variables de colores
+Credits: Pantalla de creditos
+Cursors: Objeto manito de seleccion
+Joystick: Manual guia de joystick modificado (no funcional)
+Load_images: Modulo de carga de imagenes
+Load_joysticks: Modulo de carga de joysticks
+Main_menu: Ejecutable
+Map_all: Pantalla de juego
+Map_limits: Listas con limites para los mapas
+map_selection: Pantalla de seleccion de mapas
+Music_sounds: Variables de sonido
+Options: Contiene controls/volume/sound
+Panel: Objetos que se muestran debajo de la pantalla de juego (score,time)
+Controls: Pantalla de joystick
+Sprites: Sprites de personajes
+Sounds: Sonidos del juego
+Variables: Variables generales (lista de carga de personajes, lista de carga de mapas)
+Volume: Volumen del juego
