@@ -4,7 +4,7 @@ import pygame, random
 from colores import *
 from pygame.locals import *
 from Music_sounds import button_X, button_A
-from Cursors import Manito_1
+from Cursors import Manito
 from Variables import mapas, personajes_p1, personajes_p2, break_main, joy_on
 from Transitions import *
 from Map_all import *
@@ -36,7 +36,7 @@ class Maps:
         self.cross = load_image("symbols/cross32_b.png",IMG_DIR,alpha=True)
 
         # Instancia las manos
-        self.mano1=Manito_1(400,270)
+        self.mano1=Manito(400,270,1)
         
         # Carga Joysticks     
         if joy_on:
@@ -63,7 +63,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
                 if self.k[K_RETURN]:
                     #print("mapa bosque")
@@ -75,7 +75,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
             elif self.mano1.rect.left>290 and self.mano1.rect.top>90 and self.mano1.rect.left<510 and self.mano1.rect.top<260:
                 if joy_on and b0_1:
@@ -88,7 +88,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
                 if self.k[K_RETURN]:
                     #print("mapa kawai") 
@@ -100,7 +100,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
             elif self.mano1.rect.left>540 and self.mano1.rect.top>90 and self.mano1.rect.left<760 and self.mano1.rect.top<260:
                 if joy_on and b0_1:
@@ -112,7 +112,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
                 if self.k[K_RETURN]:
                     #print("mapa ciudad")
@@ -124,7 +124,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
             ###
             elif self.mano1.rect.left>40 and self.mano1.rect.top>340 and self.mano1.rect.left<260 and self.mano1.rect.top<510:
                 if joy_on and b0_1:
@@ -136,7 +136,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
                 if self.k[K_RETURN]:
                     #print("mapa desierto")
@@ -148,7 +148,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
             
             elif self.mano1.rect.left>290 and self.mano1.rect.top>340 and self.mano1.rect.left<510 and self.mano1.rect.top<510:
                 if joy_on and b0_1:          
@@ -160,7 +160,7 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
                 if self.k[K_RETURN]:
                     #print("mapa planetas")
@@ -172,21 +172,21 @@ class Maps:
                     pygame.mixer.music.stop()
                     T = Countdown()
                     T.handle_event()
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
             
             elif self.mano1.rect.left>540 and self.mano1.rect.top>340 and self.mano1.rect.left<760 and self.mano1.rect.top<510:
                 if joy_on and b0_1:   
                     for i in range(5):
                         mapas[i]=0
                     mapas[5]=1
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                     
                 if self.k[K_RETURN]:
                     #print("mapa random")
                     for i in range(5):
                         mapas[i]=0
                     mapas[5]=1
-                    self.mano1=Manito_1(400,270)
+                    self.mano1=Manito(400,270,1)
                      
         # Si no está dentro del rectángulo, no cambia de color            
         else:

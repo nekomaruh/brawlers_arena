@@ -12,10 +12,13 @@ info = pygame.display.Info()
 X= info.current_w
 Y= info.current_h
 
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
 if Fullscreen==True:
-    screen= pygame.display.set_mode((800,600),pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE|pygame.FULLSCREEN)
+    screen= pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE|pygame.FULLSCREEN)
 else:
-    screen = pygame.display.set_mode((800,600),pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE)
+    screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT),pygame.HWSURFACE|pygame.DOUBLEBUF|pygame.RESIZABLE)
 
 #if Resize == True:
 #    screen = pygame.display.set_mode((400,300),pygame.RESIZABLE)

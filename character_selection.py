@@ -7,7 +7,7 @@ from map_selection import Maps
 from Load_images import *
 from Music_sounds import button_A, button_X, menu_select
 from Variables import personajes_p1, personajes_p2, break_main, sou, joy_on
-from Cursors import Manito_1, Manito_2
+from Cursors import Manito
 from Screen import *
 from Load_joysticks import Load_joys
 
@@ -37,8 +37,8 @@ class Character:
         self.cross = load_image("symbols/cross32_b.png",IMG_DIR,alpha=True)
         
         # Instancia las manos
-        self.mano1=Manito_1(340,270)
-        self.mano2=Manito_2(400,270)
+        self.mano1=Manito(340,270,1)
+        self.mano2=Manito(400,270,2)
         
         # Carga Joysticks      
         if joy_on:
@@ -435,8 +435,8 @@ class Character:
                 ar=ab=iz=de=x=o=False
                 self.mano1.volver()
                 self.mano2.volver()
-                self.mano1=Manito_1(340,270)
-                self.mano2=Manito_2(400,270)
+                self.mano1=Manito(340,270,1)
+                self.mano2=Manito(400,270,2)
                 self.mano1.vel=8
                 self.mano2.vel=8
                 self.suma1=0
