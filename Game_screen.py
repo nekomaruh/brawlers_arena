@@ -15,6 +15,18 @@ from Scores import *
 from BattleUtils import distance, enemy_attack
 from BattleEnemyManager import EnemyManager
 
+# Enemy states
+EASY = 1
+MEDIUM = 2
+HARD = 3
+
+# Enemy damage values based on difficulty
+enemy_damage = {
+    EASY: 0.001,
+    MEDIUM: 0.01,
+    HARD: 0.1
+}
+
 class Game_screen:
     def __init__(self):
         self.screen = screen
@@ -93,11 +105,6 @@ class Game_screen:
             self.jugador2,
             *self.enemy_manager.enemies
         ]
-
-        # Enemy states
-        self.EASY = 1
-        self.MEDIUM = 2
-        self.HARD = 3
 
     def handle_event(self):
         self.entities.add(self.jugador1)
@@ -250,18 +257,12 @@ class Game_screen:
                         bot = self.e4
                     else:
                         bot = enemy
-                        enemy.punio = enemy.estado >= self.MEDIUM
-                        if enemy.estado == self.EASY:
-                            vida_p2 -= 0.001
-                        elif enemy.estado == self.MEDIUM:
-                            vida_p2 -= 0.01
-                        elif enemy.estado == self.HARD:
-                            vida_p2 -= 0.1
+                        enemy.punio = enemy.estado >= MEDIUM
+                        vida_p2 -= enemy_damage[enemy.estado]
 
-                    if kick and (right or left):
-                        if not enemy.eliminado:
-                            enemy.life -= 0.2
-                            puntaje1.set_score(5)
+                    if not enemy.eliminado and kick and (right or left):
+                        enemy.life -= 0.2
+                        puntaje1.set_score(5)
 
                 elif d2 <= 50:
                     if enemy.eliminado:
@@ -269,17 +270,11 @@ class Game_screen:
                     else:
                         bot2 = enemy
                         enemy.punio = True
-                        if enemy.estado == self.EASY:
-                            vida_p1 -= 0.001
-                        elif enemy.estado == self.MEDIUM:
-                            vida_p1 -= 0.01
-                        elif enemy.estado == self.HARD:
-                            vida_p1 -= 0.1
+                        vida_p1 -= enemy_damage[enemy.estado]
 
-                    if golpe and (izquierda or derecha):
-                        if not enemy.eliminado:
-                            enemy.life -= 0.2
-                            puntaje2.set_score(5)
+                    if not enemy.eliminado and golpe and (izquierda or derecha):
+                        enemy.life -= 0.2
+                        puntaje2.set_score(5)
                 else:
                     enemy.punio = False
 
