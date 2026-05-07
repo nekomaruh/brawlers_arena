@@ -39,8 +39,8 @@ class Game_screen:
         self.entities = pygame.sprite.RenderUpdates()
 
         # Carga los players
-        self.jugador1 = Player1(350,350)
-        self.jugador2 = Player2(420,350)
+        self.jugador1 = Player(350,350,1)
+        self.jugador2 = Player(420,350,2)
             
         self.platforms = []
         

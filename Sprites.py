@@ -30,59 +30,75 @@ class ExitBlock(Platform):
 
 ############################ JUGADORES ################################
 
-class Player1(Entity):
-    def __init__(self,x,y):
+class Player(Entity):
+    def __init__(self, x, y, player_num):
         pygame.sprite.Sprite.__init__(self)
         self.x = x
         self.y = y
+        self.player_num = player_num  # 1 o 2
         
-        if personajes_p1[1]==1:
-            self.ani_speed_init=15 #velocidad inicial
+        # Determinamos qué array usar según el jugador
+        personajes_arr = personajes_p1 if player_num == 1 else personajes_p2
+        
+        # Velocidad de animación
+        self.ani_speed_init = 15 if personajes_arr[1] == 1 else 8
+        self.ani_speed = self.ani_speed_init
+        
+        # Mapeo limpio usando el índice del personaje seleccionado
+        rutas_ani = [
+            "images/sprites/anubis/walk/*.png",
+            "images/sprites/astro/walk/*.png",
+            "images/sprites/robot/walk/*.png",
+            "images/sprites/soldier/walk/*.png",
+            "images/sprites/thing/walk/*.png"
+        ]
+        rects = [
+            Rect(x, y, 35, 55), # Anubis
+            Rect(x, y, 35, 45), # Astro
+            Rect(x, y, 35, 45), # Robot
+            Rect(x, y, 35, 45), # Soldier
+            Rect(x, y, 35, 49)  # Thing
+        ]
+        
+        # .index(1) nos da la posición del personaje elegido (0 a 4)
+        idx = personajes_arr.index(1)
+        self.ani = glob.glob(rutas_ani[idx])
+        self.rect = rects[idx]
+        
+        self.ani_pos = 0
+        self.ani_max = len(self.ani) - 1
+        
+        # CORRECCIÓN DE LA ORIENTACIÓN INICIAL
+        img_base = pygame.image.load(self.ani[0])
+        if player_num == 1:
+            self.image = img_base
+            self.facing_right = True # Nace mirando a la derecha
+            self.arrow = load_image("symbols/arrow_p1.png", IMG_DIR, alpha=True)
         else:
-            self.ani_speed_init=8 #velocidad inicial
-        self.ani_speed=self.ani_speed_init
-        # Cambiar con un if si es que se ingresa una variable (ani)
-        if personajes_p1[0]==1:
-            self.ani = glob.glob("images/sprites/anubis/walk/*.png")
-            self.rect = Rect(x, y, 35, 55)
-        elif personajes_p1[1]==1:
-            self.ani = glob.glob("images/sprites/astro/walk/*.png")
-            self.rect = Rect(x, y, 35, 45)
-        elif personajes_p1[2]==1:
-            self.ani = glob.glob("images/sprites/robot/walk/*.png")
-            self.rect = Rect(x, y, 35, 45)
-        elif personajes_p1[3]==1:
-            self.ani = glob.glob("images/sprites/soldier/walk/*.png")
-            self.rect = Rect(x, y, 35, 45)
-        elif personajes_p1[4]==1:
-            self.ani = glob.glob("images/sprites/thing/walk/*.png")
-            self.rect = Rect(x, y, 35, 49)
-        self.ani_pos=0
-        self.ani_max=len(self.ani)-1
-        self.image = pygame.image.load(self.ani[0])   
-        self.gravity=0.9
-        self.xvel=0
-        self.yvel=0
+            self.image = pygame.transform.flip(img_base, True, False)
+            self.facing_right = False # Nace mirando a la izquierda
+            self.arrow = load_image("symbols/arrow_p2.png", IMG_DIR, alpha=True)
+            
+        self.gravity = 0.9
+        self.xvel = 0
+        self.yvel = 0
         self.onGround = False
         self.doble = True
         self.pos_x = self.rect.left
         self.pos_y = self.rect.top
 
-        self.arrow=load_image("symbols/arrow_p1.png",IMG_DIR,alpha=True)
-    
-    # Cambiar con un if si es que se ingresa una variable
-    def update(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot):
-        if personajes_p1[0]==1:
-            handle_anubis.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)
-        elif personajes_p1[1]==1:
-            handle_astro.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)    
-        elif personajes_p1[2]==1:
-            handle_robot.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)  
-        elif personajes_p1[3]==1:
-            handle_soldado.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)
-        elif personajes_p1[4]==1:
-            handle_thing.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)
-        screen.blit(self.arrow,(self.rect.left+6,self.rect.top-35))
+    def update(self, pos, up, down, left, right, running, platforms, objetivo, attack, kick, bot):
+        personajes_arr = personajes_p1 if self.player_num == 1 else personajes_p2
+        idx = personajes_arr.index(1)
+        
+        # Mapeo de los handlers para evitar el bloque if/elif
+        handlers = [handle_anubis, handle_astro, handle_robot, handle_soldado, handle_thing]
+        
+        # Ejecutamos el update del personaje correspondiente
+        handlers[idx].update1(self, pos, up, down, left, right, running, platforms, objetivo, attack, kick, bot)
+        
+        # Dibujamos la flecha identificadora
+        screen.blit(self.arrow, (self.rect.left + 6, self.rect.top - 35))
         
             
     def collide(self, xvel, yvel, platforms):
@@ -124,95 +140,7 @@ class Player1(Entity):
     def get_pos_y(self):
         return self.rect.top
     
-class Player2(Entity):
-    def __init__(self,x,y):
-        pygame.sprite.Sprite.__init__(self)
-        self.x = x
-        self.y = y
-        if personajes_p2[1]==1:
-            self.ani_speed_init=15 #velocidad inicial
-        else:
-            self.ani_speed_init=8 #velocidad inicial
-        self.ani_speed=self.ani_speed_init
-        self.ani_speed=self.ani_speed_init
-        # Cambiar con un if si es que se ingresa una variable (ani)
-        if personajes_p2[0]==1:
-            self.ani = glob.glob("images/sprites/anubis/walk/*.png")
-            self.rect = Rect(x, y, 35, 55)
-        elif personajes_p2[1]==1:
-            self.ani = glob.glob("images/sprites/astro/walk/*.png")
-            self.rect = Rect(x, y, 35, 45)
-        elif personajes_p2[2]==1:
-            self.ani = glob.glob("images/sprites/robot/walk/*.png")
-            self.rect = Rect(x, y, 35, 45)
-        elif personajes_p2[3]==1:
-            self.ani = glob.glob("images/sprites/soldier/walk/*.png")
-            self.rect = Rect(x, y, 35, 45)
-        elif personajes_p2[4]==1:
-            self.ani = glob.glob("images/sprites/thing/walk/*.png")
-            self.rect = Rect(x, y, 35, 49)
-        self.ani_pos=0
-        self.ani_max=len(self.ani)-1
-        self.image = pygame.image.load(self.ani[0])   
-        self.gravity=0.9
-        self.xvel=0
-        self.yvel=0
-        self.onGround = False
-        self.doble = True
-        self.arrow=load_image("symbols/arrow_p2.png",IMG_DIR,alpha=True)
     
-    # Cambiar con un if si es que se ingresa una variable
-    def update(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot):
-        if personajes_p2[0]==1:
-            handle_anubis.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)  
-        elif personajes_p2[1]==1:
-            handle_astro.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)    
-        elif personajes_p2[2]==1:
-            handle_robot.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot) 
-        elif personajes_p2[3]==1:
-            handle_soldado.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)
-        elif personajes_p2[4]==1:
-            handle_thing.update1(self,pos,up,down,left,right,running,platforms,objetivo,attack,kick,bot)
-        screen.blit(self.arrow,(self.rect.left+6,self.rect.top-35))
-            
-    def collide(self, xvel, yvel, platforms):
-        for p in platforms:
-            if pygame.sprite.collide_rect(self, p):
-                if isinstance(p, ExitBlock):
-                    pygame.event.post(pygame.event.Event(QUIT))
-                if xvel > 0:
-                    # Colisiona a la derecha
-                    self.rect.right = p.rect.left
-                if xvel < 0:
-                    # Colisiona a la izquierda
-                    self.rect.left = p.rect.right
-                if yvel > 0:
-                    self.rect.bottom = p.rect.top
-                    self.onGround = True
-                    self.yvel = 0
-                if yvel < 0:
-                    self.rect.top = p.rect.bottom 
-                
-    def colision(self, xvel, yvel, objetivo):
-        if pygame.sprite.collide_rect(self,objetivo):
-            if isinstance(objetivo, ExitBlock):
-                pygame.event.post(pygame.event.Event(QUIT))
-            if xvel>0:
-                self.rect.right = objetivo.rect.left
-            elif xvel<0:
-                self.rect.left = objetivo.rect.right
-                xvel=0
-            elif yvel >0:
-                self.rect.bottom = objetivo.rect.top
-                self.onGround = True
-                self.yvel=0
-            elif yvel<0:
-                self.rect.top=objetivo.rect.bottom
-                self.yvel=0
-    def get_pos_x(self):
-        return self.rect.left
-    def get_pos_y(self):
-        return self.rect.top
 ############################### ENEMIGOS ######################################
 
 
