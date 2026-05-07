@@ -12,25 +12,7 @@ from Screen import *
 from Load_map import *
 from Load_joysticks import Load_joys
 from Scores import *
-
-def enemy_attack(d1,d2,vida_enemigo,vida_p2,vida_p1,kick,right,left,golpe,izquierda,derecha,punio):
-    if d1 <=50:
-        punio=True
-        vida_p2-=0.5
-        if kick==True and(right or left)==True:
-            vida_enemigo-=0.5
-    elif d2 <=50:
-        punio=True
-        vida_p1-=0.5
-        if golpe==True and(izquierda or derecha)==True:
-            vida_enemigo-=0.5
-    else:
-        punio=False
-
-def distance(x1,y1,x2,y2):
-    d=int(sqrt((y2-y1)**2+(x2-x1)**2))
-    return d
-
+from BattleUtils import distance, enemy_attack
 
 class Game_screen:
     def __init__(self):
