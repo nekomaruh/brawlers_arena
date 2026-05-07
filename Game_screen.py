@@ -205,138 +205,73 @@ class Game_screen:
             distance_p1_p2=distance(self.jugador1.get_pos_x(),self.jugador1.get_pos_y(),self.jugador2.get_pos_x(),self.jugador2.get_pos_y())
             
             # Obtiene las distancias entre el enemigo y el jugador
-            d1_e1=distance(self.jugador1.get_pos_x(),self.jugador1.get_pos_y(),self.e1.get_pos_x(),self.e1.get_pos_y())
-            d2_e1=distance(self.jugador2.get_pos_x(),self.jugador2.get_pos_y(),self.e1.get_pos_x(),self.e1.get_pos_y())
+            for enemy in self.enemy_manager.enemies:
+                d1 = distance(
+                    self.jugador1.get_pos_x(),
+                    self.jugador1.get_pos_y(),
+                    enemy.get_pos_x(),
+                    enemy.get_pos_y()
+                )
+
+                d2 = distance(
+                    self.jugador2.get_pos_x(),
+                    self.jugador2.get_pos_y(),
+                    enemy.get_pos_x(),
+                    enemy.get_pos_y()
+                )
+
+                if d1 <= 50:
+                    if enemy.eliminado:
+                        bot = self.e4
+                    else:
+                        bot = enemy
+                        enemy.punio = enemy.estado >= 2
+                        if enemy.estado == 1:
+                            vida_p2 -= 0.001
+                        elif enemy.estado == 2:
+                            vida_p2 -= 0.01
+                        elif enemy.estado == 3:
+                            vida_p2 -= 0.1
+
+                    if kick and (right or left):
+                        if not enemy.eliminado:
+                            enemy.life -= 0.2
+                            puntaje1.set_score(5)
+
+                elif d2 <= 50:
+                    if enemy.eliminado:
+                        bot2 = self.e5
+                    else:
+                        bot2 = enemy
+                        enemy.punio = True
+                        if enemy.estado == 1:
+                            vida_p1 -= 0.001
+                        elif enemy.estado == 2:
+                            vida_p1 -= 0.01
+                        elif enemy.estado == 3:
+                            vida_p1 -= 0.1
+
+                    if golpe and (izquierda or derecha):
+                        if not enemy.eliminado:
+                            enemy.life -= 0.2
+                            puntaje2.set_score(5)
+                else:
+                    enemy.punio = False
             
-            d1_e2=distance(self.jugador1.get_pos_x(),self.jugador1.get_pos_y(),self.e2.get_pos_x(),self.e2.get_pos_y())
-            d2_e2=distance(self.jugador2.get_pos_x(),self.jugador2.get_pos_y(),self.e2.get_pos_x(),self.e2.get_pos_y())
-            
-            d1_e3=distance(self.jugador1.get_pos_x(),self.jugador1.get_pos_y(),self.e3.get_pos_x(),self.e3.get_pos_y())
-            d2_e3=distance(self.jugador2.get_pos_x(),self.jugador2.get_pos_y(),self.e3.get_pos_x(),self.e3.get_pos_y())            
-            
-            # Ataque enemigo 1
-            
-            if d1_e1 <=50:
-                if self.e1.eliminado==True:
-                    bot=self.e4
-                if self.e1.eliminado==False:
-                    bot=self.e1
-                    
-                    self.e1.punio = self.e1.estado >= 2
-                    if self.e1.estado==1:
-                        vida_p2-=0.001
-                    elif self.e1.estado==2:
-                        vida_p2-=0.01
-                    elif self.e1.estado==3:
-                        vida_p2-=0.1
-                if kick==True and(right or left)==True:
-                    if self.e1.eliminado==False:
-                        self.e1.life-=0.2
-                        puntaje1.set_score(5)
-                   
-            elif d2_e1 <=50:
-                if self.e1.eliminado==True:
-                    bot2=self.e5
-                if self.e1.eliminado==False:
-                    bot2=self.e1
-                    self.e1.punio=True
-                    #punio=True
-                    if self.e1.estado==1:
-                        vida_p1-=0.001
-                    elif self.e1.estado==2:
-                        vida_p1-=0.01
-                    elif self.e1.estado==3:
-                        vida_p1-=0.1
-                if golpe==True and(izquierda or derecha)==True:
-                    if self.e1.eliminado==False:
-                        self.e1.life-=0.2
-                        puntaje2.set_score(5)
-            else:
-                self.e1.punio=False
-            # Ataque enemigo 2
-            if d1_e2 <=50:
-                if self.e2.eliminado==True:
-                    bot=self.e4
-                if self.e2.eliminado==False:
-                    bot=self.e2
-                    self.e2.punio = self.e2.estado >= 2
-                    if self.e2.estado==1:
-                        vida_p2-=0.001
-                    elif self.e2.estado==2:
-                        vida_p2-=0.01
-                    elif self.e2.estado==3:
-                        vida_p2-=0.1
-                if kick==True and(right or left)==True:
-                    if self.e2.eliminado==False:
-                        self.e2.life-=0.2
-                        puntaje1.set_score(5)
-            elif d2_e2 <=50:
-                if self.e2.eliminado==True:
-                    bot2=self.e5
-                if self.e2.eliminado==False:
-                    bot2=self.e2
-                    self.e2.punio=True
-                    #punio=True
-                    if self.e2.estado==1:
-                        vida_p1-=0.001
-                    elif self.e2.estado==2:
-                        vida_p1-=0.01
-                    elif self.e2.estado==3:
-                        vida_p1-=0.1
-                if golpe==True and(izquierda or derecha)==True:
-                    if self.e2.eliminado==False:
-                        self.e2.life-=0.2
-                        puntaje2.set_score(5)
-            else:
-                self.e2.punio=False
-            # ENEMI 3
-            if d1_e3 <=50:
-                if self.e3.eliminado==True:
-                    bot=self.e4
-                if self.e3.eliminado==False:
-                    bot=self.e3
-                    self.e3.punio = self.e3.estado >= 2
-                    if self.e3.estado==1:
-                        vida_p2-=0.001
-                    elif self.e3.estado==2:
-                        vida_p2-=0.01
-                    elif self.e3.estado==3:
-                        vida_p2-=0.1
-                if kick==True and(right or left)==True:
-                    if self.e3.eliminado==False:
-                        self.e3.life-=0.2
-                        puntaje1.set_score(5)
-            elif d2_e3 <=50:
-                if self.e3.eliminado==True:
-                    bot2=self.e5
-                if self.e3.eliminado==False:
-                    bot2=self.e3
-                    self.e3.punio=True
-                    #punio=True
-                    if self.e3.estado==1:
-                        vida_p1-=0.001
-                    elif self.e3.estado==2:
-                        vida_p1-=0.01
-                    elif self.e3.estado==3:
-                        vida_p1-=0.1
-                if golpe==True and(izquierda or derecha)==True:
-                    if self.e3.eliminado==False:
-                        self.e3.life-=0.2
-                        puntaje2.set_score(5)
-            else:
-                self.e3.punio=False
-            
-            if self.e1.life<=1:
-                self.e1.image=load_image("sprites/tomb/1.png",IMG_DIR,alpha=True)
-                self.e1.eliminado=True
-            
-            if self.e2.life<=1:
-                self.e2.image=load_image("sprites/tomb/2.png",IMG_DIR,alpha=True)
-                self.e2.eliminado=True
-                
-            if self.e3.life<=1:
-                self.e3.image=load_image("sprites/tomb/3.png",IMG_DIR,alpha=True)
-                self.e3.eliminado=True
+            tomb_images = [
+                "sprites/tomb/1.png",
+                "sprites/tomb/2.png",
+                "sprites/tomb/3.png"
+            ]
+
+            for index, enemy in enumerate(self.enemy_manager.enemies):
+                if enemy.life <= 1:
+                    enemy.image = load_image(
+                        tomb_images[index],
+                        IMG_DIR,
+                        alpha=True
+                    )
+                    enemy.eliminado = True
             
             # Setea el score mientras el jugador este cerca y este pegando
             if distance_p1_p2 <= 36 and kick==True and (right or left)==True:
@@ -504,15 +439,22 @@ class Game_screen:
             if self.jugador2.rect.left>800 or self.jugador2.rect.left==0 or self.jugador2.rect.top>600 or self.jugador2.rect.top==0:
                 self.jugador2.rect.left=300
                 self.jugador2.rect.top=300
-            if self.e1.rect.left>800 or self.e1.rect.left==0 or self.e1.rect.top>600 or self.e1.rect.top==0:
-                self.e1.rect.left=300
-                self.e1.rect.top=300
-            if self.e2.rect.left>800 or self.e2.rect.left==0 or self.e2.rect.top>600 or self.e2.rect.top==0:
-                self.e2.rect.left=300
-                self.e2.rect.top=300
-            if self.e3.rect.left>800 or self.e3.rect.left==0 or self.e3.rect.top>600 or self.e3.rect.top==0:
-                self.e3.rect.left=300
-                self.e3.rect.top=300
+
+            entities_to_check = [
+                self.jugador1,
+                self.jugador2,
+                *self.enemy_manager.enemies
+            ]
+
+            for entity in entities_to_check:
+                if (
+                    entity.rect.left > 800
+                    or entity.rect.left == 0
+                    or entity.rect.top > 600
+                    or entity.rect.top == 0
+                ):
+                    entity.rect.left = 300
+                    entity.rect.top = 300
             
             # Muestra el mapa y las plataformas
             self.screen.blit(self.mapa,(0,0))
@@ -523,17 +465,20 @@ class Game_screen:
             self.jugador1.update(pos,up,down,left,right,running,self.platforms,objetivo,attack,kick,bot)
             self.jugador2.update(pos,arriba,abajo,izquierda,derecha,correr,self.platforms,enemigo,ataque,golpe,bot2)
             
-            if self.e1.eliminado==False:
-                self.e1.update(pos,jump,down,move,self.platforms,objetivo,attack,punio,enemigo)
-                self.e1.life_bar(self.e1.life)
-                
-            if self.e2.eliminado==False:
-                self.e2.update(pos,jump,down,move,self.platforms,objetivo,attack,punio,enemigo)
-                self.e2.life_bar(self.e2.life)
-            
-            if self.e3.eliminado==False:
-                self.e3.update(pos,jump,down,move,self.platforms,objetivo,attack,punio,enemigo)
-                self.e3.life_bar(self.e3.life)        
+            for enemy in self.enemy_manager.enemies:
+                if not enemy.eliminado:
+                    enemy.update(
+                        pos,
+                        jump,
+                        down,
+                        move,
+                        self.platforms,
+                        objetivo,
+                        attack,
+                        punio,
+                        enemigo
+                    )
+                    enemy.life_bar(enemy.life)    
             
             # Reinicia el salto del enemigo
             if c_jump_E1==0:
