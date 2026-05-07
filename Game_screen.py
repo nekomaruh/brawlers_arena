@@ -87,6 +87,17 @@ class Game_screen:
             self.y += 10.35
             self.x = 2.5
         
+        # Checkquear colisiones con enemigos
+        self.entities_to_check = [
+            self.jugador1,
+            self.jugador2,
+            *self.enemy_manager.enemies
+        ]
+
+        # Enemy states
+        self.EASY = 1
+        self.MEDIUM = 2
+        self.HARD = 3
 
     def handle_event(self):
         self.entities.add(self.jugador1)
@@ -130,6 +141,7 @@ class Game_screen:
         surge=0
         
         while game:
+
             c_jump_E1+=1/60
             
             if state==0:
@@ -219,36 +231,31 @@ class Game_screen:
                     vida_p1=200
                 if vida_p2>200:
                     vida_p2=200
+
+            p1x = self.jugador1.get_pos_x()
+            p1y = self.jugador1.get_pos_y()
+
+            p2x = self.jugador2.get_pos_x()
+            p2y = self.jugador2.get_pos_y()
             
-            distance_p1_p2=distance(self.jugador1.get_pos_x(),self.jugador1.get_pos_y(),self.jugador2.get_pos_x(),self.jugador2.get_pos_y())
+            distance_p1_p2=distance(p1x,p1y,p2x,p2y)
             
             # Obtiene las distancias entre el enemigo y el jugador
             for enemy in self.enemy_manager.enemies:
-                d1 = distance(
-                    self.jugador1.get_pos_x(),
-                    self.jugador1.get_pos_y(),
-                    enemy.get_pos_x(),
-                    enemy.get_pos_y()
-                )
-
-                d2 = distance(
-                    self.jugador2.get_pos_x(),
-                    self.jugador2.get_pos_y(),
-                    enemy.get_pos_x(),
-                    enemy.get_pos_y()
-                )
+                d1 = distance(p1x,p1y,enemy.get_pos_x(),enemy.get_pos_y())
+                d2 = distance(p2x,p2y,enemy.get_pos_x(),enemy.get_pos_y())
 
                 if d1 <= 50:
                     if enemy.eliminado:
                         bot = self.e4
                     else:
                         bot = enemy
-                        enemy.punio = enemy.estado >= 2
-                        if enemy.estado == 1:
+                        enemy.punio = enemy.estado >= self.MEDIUM
+                        if enemy.estado == self.EASY:
                             vida_p2 -= 0.001
-                        elif enemy.estado == 2:
+                        elif enemy.estado == self.MEDIUM:
                             vida_p2 -= 0.01
-                        elif enemy.estado == 3:
+                        elif enemy.estado == self.HARD:
                             vida_p2 -= 0.1
 
                     if kick and (right or left):
@@ -262,11 +269,11 @@ class Game_screen:
                     else:
                         bot2 = enemy
                         enemy.punio = True
-                        if enemy.estado == 1:
+                        if enemy.estado == self.EASY:
                             vida_p1 -= 0.001
-                        elif enemy.estado == 2:
+                        elif enemy.estado == self.MEDIUM:
                             vida_p1 -= 0.01
-                        elif enemy.estado == 3:
+                        elif enemy.estado == self.HARD:
                             vida_p1 -= 0.1
 
                     if golpe and (izquierda or derecha):
@@ -448,13 +455,8 @@ class Game_screen:
                 self.jugador2.rect.left=300
                 self.jugador2.rect.top=300
 
-            entities_to_check = [
-                self.jugador1,
-                self.jugador2,
-                *self.enemy_manager.enemies
-            ]
 
-            for entity in entities_to_check:
+            for entity in self.entities_to_check:
                 if (
                     entity.rect.left > 800
                     or entity.rect.left == 0
