@@ -13,6 +13,7 @@ from Load_map import *
 from Load_joysticks import Load_joys
 from Scores import *
 from BattleUtils import distance, enemy_attack
+from BattleEnemyManager import EnemyManager
 
 class Game_screen:
     def __init__(self):
@@ -34,12 +35,12 @@ class Game_screen:
         
        
         # Carga enemigo
-        self.e1=E1(random.randint(10,700),random.randint(10,450))
-        self.e2=E1(random.randint(10,700),random.randint(10,450))
-        self.e3=E1(random.randint(10,700),random.randint(10,450))
-        self.e4=E1(800,600)
-        self.e5=E1(800,600)
-
+        self.enemy_manager=EnemyManager()
+        self.e1=self.enemy_manager.e1
+        self.e2=self.enemy_manager.e2
+        self.e3=self.enemy_manager.e3
+        self.e4=self.enemy_manager.e4
+        self.e5=self.enemy_manager.e5
     
         self.font = pygame.font.Font("fonts/MotionControl-BoldItalic.otf", 50)
         
@@ -72,9 +73,7 @@ class Game_screen:
     def handle_event(self):
         self.entities.add(self.jugador1)
         self.entities.add(self.jugador2)
-        self.entities.add(self.e1)
-        self.entities.add(self.e2)
-        self.entities.add(self.e3)
+        self.enemy_manager.add_to_entities(self.entities)
         #self.entities.add(self.e4)
         #self.entities.add(self.e5)
         up=down=left=right=running=arriba=abajo=izquierda=derecha=correr=attack=kick=ataque=golpe=False
@@ -107,8 +106,8 @@ class Game_screen:
         vida_p1=life_bar[0]
         vida_p2=life_bar[1]
         
-        bot=self.e4
-        bot2=self.e5
+        bot=self.enemy_manager.bot
+        bot2=self.enemy_manager.bot2
         
         surge=0
         
@@ -132,7 +131,7 @@ class Game_screen:
                     jump=True
                     c_jump_E1=0
             
-            if self.e1.eliminado==True and self.e2.eliminado==True and self.e3.eliminado==True:
+            if self.enemy_manager.all_dead():
                 bot=self.e4
                 bot2=self.e5
                 c_state+=1/60     
@@ -145,75 +144,22 @@ class Game_screen:
             if int(c_state)==5:
                 surge=0
                 if state==0:
-                    self.e1.eliminado=False
-                    self.e2.eliminado=False
-                    self.e3.eliminado=False
-                    self.e1.life=50
-                    self.e2.life=50
-                    self.e3.life=50
-                    self.e1.estado=2
-                    self.e2.estado=2
-                    self.e3.estado=2
-                    self.e1.rect.left=random.randint(10,700)
-                    self.e1.rect.top=random.randint(10,450)
-                    self.e2.rect.left=random.randint(10,700)
-                    self.e2.rect.top=random.randint(10,450)
-                    self.e3.rect.left=random.randint(10,700)
-                    self.e3.rect.top=random.randint(10,450)
+                    self.enemy_manager.respawn_all(50,2)
                     c_state=0
                     state+=1
+
                 elif state==1:
-                    self.e1.eliminado=False
-                    self.e2.eliminado=False
-                    self.e3.eliminado=False
-                    self.e1.life=60
-                    self.e2.life=60
-                    self.e3.life=60
-                    self.e1.estado=3
-                    self.e2.estado=3
-                    self.e3.estado=3
-                    self.e1.rect.left=random.randint(10,700)
-                    self.e1.rect.top=random.randint(10,450)
-                    self.e2.rect.left=random.randint(10,700)
-                    self.e2.rect.top=random.randint(10,450)
-                    self.e3.rect.left=random.randint(10,700)
-                    self.e3.rect.top=random.randint(10,450)
+                    self.enemy_manager.respawn_all(60,3)
                     c_state=0
                     state+=1
+
                 elif state==2:
-                    self.e1.eliminado=False
-                    self.e2.eliminado=False
-                    self.e3.eliminado=False
-                    self.e1.life=75
-                    self.e2.life=75
-                    self.e3.life=75
-                    self.e1.estado=3
-                    self.e2.estado=3
-                    self.e3.estado=3
-                    self.e1.rect.left=random.randint(10,700)
-                    self.e1.rect.top=random.randint(10,450)
-                    self.e2.rect.left=random.randint(10,700)
-                    self.e2.rect.top=random.randint(10,450)
-                    self.e3.rect.left=random.randint(10,700)
-                    self.e3.rect.top=random.randint(10,450)
+                    self.enemy_manager.respawn_all(75,3)
                     c_state=0
                     state+=1
+
                 elif state==3:
-                    self.e1.eliminado=False
-                    self.e2.eliminado=False
-                    self.e3.eliminado=False
-                    self.e1.life=100
-                    self.e2.life=100
-                    self.e3.life=100
-                    self.e1.estado=3
-                    self.e2.estado=3
-                    self.e3.estado=3
-                    self.e1.rect.left=random.randint(10,700)
-                    self.e1.rect.top=random.randint(10,450)
-                    self.e2.rect.left=random.randint(10,700)
-                    self.e2.rect.top=random.randint(10,450)
-                    self.e3.rect.left=random.randint(10,700)
-                    self.e3.rect.top=random.randint(10,450)
+                    self.enemy_manager.respawn_all(100,3)
                     c_state=0
                     state+=1
 
