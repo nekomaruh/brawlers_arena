@@ -124,8 +124,20 @@ FIGHTER_CONFIG = {
 # LÓGICA CENTRALIZADA (Base Entity / Mixin)
 # =====================================================================
 
+# =====================================================================
+# LÓGICA CENTRALIZADA (Base Entity / Mixin)
+# =====================================================================
+
 class BaseFighter:
     def _ensure_config(self, fighter_type: str) -> None:
+        # NUEVO: Bandera para recordar hacia dónde mira
+        if not hasattr(self, 'facing_right'): 
+            # Si el personaje "nace" en la mitad derecha de la pantalla, mira a la izquierda.
+            # Nota: Cambia '400' por la mitad exacta del ancho de tu pantalla (ej. SCREEN_WIDTH / 2)
+            if hasattr(self, 'rect') and self.rect.centerx > 400:
+                self.facing_right = False
+            else:
+                self.facing_right = True
         """Inicializa las variables del personaje de forma perezosa (Lazy Init)."""
         if not hasattr(self, 'config') or getattr(self, '_fighter_type', None) != fighter_type:
             self.config = FIGHTER_CONFIG.get(fighter_type, {})
@@ -143,6 +155,14 @@ class BaseFighter:
             if not hasattr(self, 'doble'): self.doble = False
             if not hasattr(self, 'xvel'): self.xvel = 0
             if not hasattr(self, 'yvel'): self.yvel = 0
+            
+            # NUEVO: Bandera para recordar hacia dónde mira (derecha por defecto)
+            if not hasattr(self, 'facing_right'): self.facing_right = True
+
+            # NUEVO: Cachear las imágenes de Idle (Repos) para no cargarlas cada frame (Optimización)
+            if "idle_img" in self.config:
+                self._idle_img_r = pygame.image.load(self.config["idle_img"]).convert_alpha()
+                self._idle_img_l = pygame.transform.flip(self._idle_img_r, True, False)
 
     def _base_update(self, fighter_type: str, up: bool, left: bool, right: bool, running: bool, 
                platforms: list, objetivo: Any, attack: bool, kick: bool, 
@@ -156,6 +176,8 @@ class BaseFighter:
         
         # 3. Lógica Horizontal y Animación
         if right:
+            self.facing_right = True  # NUEVO: Recordar que mira a la derecha
+            
             if kick:
                 self.ataque += 1
                 melee_list = self.config.get("melee_r", [])
@@ -171,9 +193,8 @@ class BaseFighter:
                     except: pass
                     
             self.xvel = current_speed + (self.run_bonus if running else 0)
-            self.x += 1 # RESTAURADO: Necesario para el cálculo de distancia de la IA
+            self.x += 1 
             
-            # Animación de caminar original
             if hasattr(self, 'ani_speed'):
                 self.ani_speed -= 1
                 if self.ani_speed <= 0:
@@ -183,9 +204,11 @@ class BaseFighter:
                         self.ani_pos = 0
                     else:
                         self.ani_pos += 1
-            self.r = self.image # RESTAURADO: El motor de IA lo puede estar leyendo
+            self.r = self.image 
 
         elif left:
+            self.facing_right = False # NUEVO: Recordar que mira a la izquierda
+            
             if kick:
                 self.ataque += 1
                 melee_list = self.config.get("melee_l", [])
@@ -201,9 +224,8 @@ class BaseFighter:
                     except: pass
 
             self.xvel = -current_speed - (self.run_bonus if running else 0)
-            self.x -= 1 # RESTAURADO: Necesario para el cálculo de distancia de la IA
+            self.x -= 1 
             
-            # Animación de caminar original (espejada)
             if hasattr(self, 'ani_speed'):
                 self.ani_speed -= 1
                 if self.ani_speed <= 0:
@@ -214,11 +236,15 @@ class BaseFighter:
                         self.ani_pos = 0
                     else:
                         self.ani_pos += 1
-            self.l = self.image # RESTAURADO: El motor de IA lo puede estar leyendo
+            self.l = self.image 
         else:
             self.xvel = 0
-            if "idle_img" in self.config:
-                self.image = pygame.image.load(self.config["idle_img"]).convert_alpha()
+            # NUEVO: Asignar la imagen cacheada correcta según la última dirección
+            if hasattr(self, '_idle_img_r'):
+                if self.facing_right:
+                    self.image = self._idle_img_r
+                else:
+                    self.image = self._idle_img_l
 
         # 4. Lógica Vertical (Saltos y Gravedad)
         if self.onGround:
