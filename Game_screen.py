@@ -498,6 +498,10 @@ class Game_screen:
                         right = True
                     if e.key == K_SPACE:
                         running = True
+                    if e.key == K_k:
+                        kick = True
+                    if e.key == K_l:
+                        attack = True
                     if e.key == K_RETURN:
                         up=down=left=right=arriba=abajo=izquierda=derecha=correr=running=attack=kick=ataque=golpe=False
                         P = Pause()
@@ -529,6 +533,10 @@ class Game_screen:
                         pos=0
                     if e.key == K_SPACE:
                         running = False
+                    if e.key == K_k:
+                        kick = False
+                    if e.key == K_l:
+                        attack = False
                     
                     # Para el jugador 2
                     if e.key == K_w:

@@ -124,20 +124,15 @@ FIGHTER_CONFIG = {
 # LÓGICA CENTRALIZADA (Base Entity / Mixin)
 # =====================================================================
 
-# =====================================================================
-# LÓGICA CENTRALIZADA (Base Entity / Mixin)
-# =====================================================================
-
 class BaseFighter:
     def _ensure_config(self, fighter_type: str) -> None:
-        # NUEVO: Bandera para recordar hacia dónde mira
+        # 1. Determinar dirección inicial basada en posición (Mira a la izquierda si nace a la derecha)
         if not hasattr(self, 'facing_right'): 
-            # Si el personaje "nace" en la mitad derecha de la pantalla, mira a la izquierda.
-            # Nota: Cambia '400' por la mitad exacta del ancho de tu pantalla (ej. SCREEN_WIDTH / 2)
             if hasattr(self, 'rect') and self.rect.centerx > 400:
                 self.facing_right = False
             else:
                 self.facing_right = True
+
         """Inicializa las variables del personaje de forma perezosa (Lazy Init)."""
         if not hasattr(self, 'config') or getattr(self, '_fighter_type', None) != fighter_type:
             self.config = FIGHTER_CONFIG.get(fighter_type, {})
@@ -150,16 +145,13 @@ class BaseFighter:
             self.double_jump_power = self.config.get("double_jump", 12)
             self.gravity = self.config.get("gravity", 1)
             
-            # Inicializar variables de estado requeridas por la lógica si no existen
+            # Inicializar variables de estado
             if not hasattr(self, 'ataque'): self.ataque = 0
             if not hasattr(self, 'doble'): self.doble = False
             if not hasattr(self, 'xvel'): self.xvel = 0
             if not hasattr(self, 'yvel'): self.yvel = 0
             
-            # NUEVO: Bandera para recordar hacia dónde mira (derecha por defecto)
-            if not hasattr(self, 'facing_right'): self.facing_right = True
-
-            # NUEVO: Cachear las imágenes de Idle (Repos) para no cargarlas cada frame (Optimización)
+            # Cachear las imágenes de Idle (Repos) para optimización[cite: 1]
             if "idle_img" in self.config:
                 self._idle_img_r = pygame.image.load(self.config["idle_img"]).convert_alpha()
                 self._idle_img_l = pygame.transform.flip(self._idle_img_r, True, False)
@@ -176,9 +168,10 @@ class BaseFighter:
         
         # 3. Lógica Horizontal y Animación
         if right:
-            self.facing_right = True  # NUEVO: Recordar que mira a la derecha
+            self.facing_right = True
             
-            if kick:
+            # Modificado: Ahora K o L activan la animación de ataque
+            if kick or attack:
                 self.ataque += 1
                 melee_list = self.config.get("melee_r", [])
                 if melee_list:
@@ -207,9 +200,10 @@ class BaseFighter:
             self.r = self.image 
 
         elif left:
-            self.facing_right = False # NUEVO: Recordar que mira a la izquierda
+            self.facing_right = False
             
-            if kick:
+            # Modificado: Ahora K o L activan la animación de ataque
+            if kick or attack:
                 self.ataque += 1
                 melee_list = self.config.get("melee_l", [])
                 if melee_list:
@@ -239,12 +233,18 @@ class BaseFighter:
             self.l = self.image 
         else:
             self.xvel = 0
-            # NUEVO: Asignar la imagen cacheada correcta según la última dirección
-            if hasattr(self, '_idle_img_r'):
-                if self.facing_right:
-                    self.image = self._idle_img_r
-                else:
-                    self.image = self._idle_img_l
+            # Animación de ataque estando quieto (Soporte para L agregado aquí también)
+            if kick or attack:
+                self.ataque += 1
+                melee_list = self.config.get("melee_r", []) if self.facing_right else self.config.get("melee_l", [])
+                if melee_list:
+                    if self.ataque >= len(melee_list) * 2:
+                        self.ataque = 0
+                    self.image = load_image(melee_list[self.ataque // 2], IMG_DIR, alpha=True)
+            else:
+                # Si no está atacando, usa el Idle cacheado
+                if hasattr(self, '_idle_img_r'):
+                    self.image = self._idle_img_r if self.facing_right else self._idle_img_l
 
         # 4. Lógica Vertical (Saltos y Gravedad)
         if self.onGround:
@@ -253,7 +253,6 @@ class BaseFighter:
                 self.doble = True
         else:
             self.yvel += self.gravity
-            
             if self.yvel > 0 and getattr(self, 'doble', False):               
                 if up:
                     self.yvel -= self.double_jump_power
@@ -263,25 +262,19 @@ class BaseFighter:
                     elif right and "jump_r" in self.config:
                         self.image = load_image(self.config["jump_r"], IMG_DIR, alpha=True)
 
-        # 5. Aplicar físicas X y evaluar colisiones
+        # 5. Aplicar físicas X e Y y evaluar colisiones
         self.rect.left += self.xvel
         self.collide(self.xvel, 0, platforms)
         
-        if objetivo: 
-            self.colision(self.xvel, 0, objetivo)
-        if enemigo_o_bot: 
-            self.colision(self.xvel, 0, enemigo_o_bot)
+        if objetivo: self.colision(self.xvel, 0, objetivo)
+        if enemigo_o_bot: self.colision(self.xvel, 0, enemigo_o_bot)
 
-        # 6. Aplicar físicas Y y evaluar colisiones
         self.rect.top += self.yvel
         self.onGround = False
-        
         self.collide(0, self.yvel, platforms)
         
-        if objetivo: 
-            self.colision(0, self.yvel, objetivo)
-        if enemigo_o_bot: 
-            self.colision(0, self.yvel, enemigo_o_bot)
+        if objetivo: self.colision(0, self.yvel, objetivo)
+        if enemigo_o_bot: self.colision(0, self.yvel, enemigo_o_bot)
 
 # =====================================================================
 # WRAPPERS DE COMPATIBILIDAD: JUGADORES
