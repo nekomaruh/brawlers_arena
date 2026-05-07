@@ -4,7 +4,7 @@ from Load_images import load_image, IMG_DIR
 from Sprites import *
 from Music_sounds import countdown
 import pygame
-from Map_all import *
+from Game_screen import *
 from Screen import *
 
 pygame.init()

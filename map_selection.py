@@ -8,7 +8,7 @@ from Music_sounds import button_X, button_A
 from Cursors import Manito
 from Variables import mapas, personajes_p1, personajes_p2, break_main, joy_on
 from Transitions import *
-from Map_all import *
+from Game_screen import *
 from Screen import *
 from Load_joysticks import Load_joys
 
