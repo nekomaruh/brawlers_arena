@@ -76,6 +76,15 @@ class Options:
                         paused=False
                     if event.key == pygame.K_ESCAPE:
                         delay=True
+                    if event.key == pygame.K_v:
+                        V = Volume()
+                        V.volume_loop()
+                    if event.key == pygame.K_c:
+                        C = Controls()
+                        C.controls_loop()
+                    if event.key == pygame.K_s:
+                        S = Sound()
+                        S.sound_loop()
                         
                 if joy_on:
                     if event.type == pygame.JOYBUTTONDOWN:
