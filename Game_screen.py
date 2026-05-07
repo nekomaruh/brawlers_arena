@@ -32,8 +32,26 @@ class Game_screen:
         # Carga mapas
         Load_map(self)
         pygame.mixer.music.play(-1, 0.0) # reproduce musica
+
+        # Carga imágenes
+        self.vine_image = load_image(
+            "symbols/blood.png",
+            IMG_DIR,
+            alpha=True
+        )
+
+        self.tomb_images = [
+            load_image("sprites/tomb/1.png", IMG_DIR, alpha=True),
+            load_image("sprites/tomb/2.png", IMG_DIR, alpha=True),
+            load_image("sprites/tomb/3.png", IMG_DIR, alpha=True)
+        ]
+
+        self.player_tomb = load_image(
+            "sprites/tomb/tumba.png",
+            IMG_DIR,
+            alpha=True
+        )
         
-       
         # Carga enemigo
         self.enemy_manager=EnemyManager()
         self.e1=self.enemy_manager.e1
@@ -257,20 +275,10 @@ class Game_screen:
                             puntaje2.set_score(5)
                 else:
                     enemy.punio = False
-            
-            tomb_images = [
-                "sprites/tomb/1.png",
-                "sprites/tomb/2.png",
-                "sprites/tomb/3.png"
-            ]
 
             for index, enemy in enumerate(self.enemy_manager.enemies):
                 if enemy.life <= 1:
-                    enemy.image = load_image(
-                        tomb_images[index],
-                        IMG_DIR,
-                        alpha=True
-                    )
+                    enemy.image = self.tomb_images[index]
                     enemy.eliminado = True
             
             # Setea el score mientras el jugador este cerca y este pegando
@@ -509,11 +517,10 @@ class Game_screen:
             
             if int(vida_p1)==0:
                 #imp_vida1=self.font.render("Jugador 2 ha perdido", True, (255,255,255))
-                vine=load_image("symbols/blood.png", IMG_DIR, alpha=True)
-                self.screen.blit(vine,(170,200))
+                self.screen.blit(self.vine_image,(170,200))
                 imp_vida1=self.font.render("  Player 2 has lost", True, (255,255,255))
                 self.screen.blit(imp_vida1,(250,250))
-                self.jugador2.image=load_image("sprites/tomb/tumba.png", IMG_DIR, alpha=True)
+                self.jugador2.image=self.player_tomb
                 vida.show_vin()
                 c_breaker+=1
                 c_scores+=1
@@ -522,11 +529,10 @@ class Game_screen:
                     break_main[0]=True
             elif int(vida_p2)==0:
                 #imp_vida2=self.font.render("Jugador 1 ha perdido", True, (255,255,255))
-                vine=load_image("symbols/blood.png", IMG_DIR, alpha=True)
-                self.screen.blit(vine,(170,200))
+                self.screen.blit(self.vine_image,(170,200))
                 imp_vida2=self.font.render("  Player 1 has lost", True, (255,255,255))
                 self.screen.blit(imp_vida2,(250,250))
-                self.jugador1.image=load_image("sprites/tomb/tumba.png", IMG_DIR, alpha=True)
+                self.jugador1.image=self.player_tomb
                 vida.show_vin()
                 c_scores+=1
                 c_breaker+=1
@@ -572,5 +578,3 @@ class Game_screen:
 if __name__ == "__main__":
     g = Game_screen()
     g.handle_event()
-
-
