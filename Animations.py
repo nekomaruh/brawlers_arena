@@ -309,64 +309,63 @@ class handle_anubis:
 class handle_ufo:
     def state_1(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "ufo", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, False, enemigo, 2)
+        BaseFighter._base_update(self, "ufo", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, False, enemigo, 2)
 
     def state_2(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "ufo", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 2)
+        BaseFighter._base_update(self, "ufo", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 2)
 
     def state_3(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "ufo", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 3)
+        BaseFighter._base_update(self, "ufo", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 3)
 
 class handle_duck:
     def state_1(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "duck", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, False, enemigo, 2)
+        BaseFighter._base_update(self, "duck", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, False, enemigo, 2)
 
     def state_2(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "duck", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 2)
+        BaseFighter._base_update(self, "duck", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 2)
 
     def state_3(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "duck", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 3)
+        BaseFighter._base_update(self, "duck", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 3)
 
 class handle_mummy:
     def state_1(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "mummy", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, False, enemigo, 2)
+        BaseFighter._base_update(self, "mummy", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, False, enemigo, 2)
 
     def state_2(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "mummy", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 2)
+        BaseFighter._base_update(self, "mummy", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 2)
 
     def state_3(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "mummy", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 3)
+        BaseFighter._base_update(self, "mummy", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 3)
 
 class handle_ghost:
     def state_1(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "ghost", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, False, enemigo, 2)
+        BaseFighter._base_update(self, "ghost", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, False, enemigo, 2)
 
     def state_2(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "ghost", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 2)
+        BaseFighter._base_update(self, "ghost", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 2)
 
     def state_3(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "ghost", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 3)
+        BaseFighter._base_update(self, "ghost", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 3)
 
 class handle_prototype:
     def state_1(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "prototype", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, False, enemigo, 2)
+        BaseFighter._base_update(self, "prototype", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, False, enemigo, 2)
 
     def state_2(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "prototype", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 2)
-
+        BaseFighter._base_update(self, "prototype", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 2)
     def state_3(self, pos, jump, down, move, platforms, objetivo, attack, punio, enemigo):
         c_move = getattr(self, 'move', 0)
-        BaseFighter._base_update(self, "prototype", jump, c_move==-1, c_move==1, False, platforms, objetivo, attack, punio, enemigo, 3)
+        BaseFighter._base_update(self, "prototype", jump, c_move==-1, c_move==1, False, platforms, objetivo, punio, punio, enemigo, 3)
