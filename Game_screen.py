@@ -275,8 +275,8 @@ class Game_screen:
                     bot=self.e4
                 if self.e1.eliminado==False:
                     bot=self.e1
-                    self.e1.punio=True
-                    #punio=True
+                    
+                    self.e1.punio = self.e1.estado >= 2
                     if self.e1.estado==1:
                         vida_p2-=0.001
                     elif self.e1.estado==2:
@@ -313,8 +313,7 @@ class Game_screen:
                     bot=self.e4
                 if self.e2.eliminado==False:
                     bot=self.e2
-                    self.e2.punio=True
-                    #punio=True
+                    self.e2.punio = self.e2.estado >= 2
                     if self.e2.estado==1:
                         vida_p2-=0.001
                     elif self.e2.estado==2:
@@ -350,8 +349,7 @@ class Game_screen:
                     bot=self.e4
                 if self.e3.eliminado==False:
                     bot=self.e3
-                    self.e3.punio=True
-                    #punio=True
+                    self.e3.punio = self.e3.estado >= 2
                     if self.e3.estado==1:
                         vida_p2-=0.001
                     elif self.e3.estado==2:
